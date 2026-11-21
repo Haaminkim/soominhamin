@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14233a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>이집트 10박 11일 여행 플래너</title>
+<style>
+:root{--navy:#14233a;--navy2:#1d3354;--bg:#f3ece0;--card:#fff;--ink:#1e242b;--mut:#69707b;--line:#e4dbc9;--gold:#b88636;--gi:#8c6220;--soft:#fbf4e4;--ok:#15803d;--rose:#be123c;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1523;--card:#16233a;--ink:#ecebe6;--mut:#9aa4b2;--line:#2a3b57;--gold:#e0ad54;--gi:#f0c66f;--soft:#1d2b44;--ok:#4ade80;--rose:#fb7185;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0d1523;--card:#16233a;--ink:#ecebe6;--mut:#9aa4b2;--line:#2a3b57;--gold:#e0ad54;--gi:#f0c66f;--soft:#1d2b44;--ok:#4ade80;--rose:#fb7185;color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+:root{padding-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard",sans-serif;padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navy);z-index:30}
+button{font-family:inherit;color:inherit}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--navy);color:#fff}
+.fr{height:4px;background:repeating-linear-gradient(90deg,#d4a349 0 8px,#0b1526 8px 11px,#f2ce85 11px 14px,#0b1526 14px 17px)}
+.hd{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;padding:10px 16px 8px}
+h1{margin:0;font-size:19px;letter-spacing:-.02em}
+.sub{font-size:12px;color:#cdb98d}
+.tt{text-align:right}.tt small{display:block;font-size:11px;color:#cdb98d}
+.tt b{font-size:18px;color:#f3cf8b;font-variant-numeric:tabular-nums}
+#chips{position:relative;display:flex;gap:6px;overflow-x:auto;padding:4px 12px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#chips::-webkit-scrollbar{display:none}
+.chip{flex:none;min-width:58px;height:50px;border-radius:12px;border:1px solid #2f4468;background:var(--navy2);color:#cfd7e4;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px}
+.chip b{font-size:15px}
+.chip.on{background:#e0ad54;border-color:#e0ad54;color:#14233a}
+main{max-width:640px;margin:0 auto;padding:14px 14px 0}
+.reg{margin:2px 2px 12px;font-size:26px;letter-spacing:-.03em;line-height:1.15}
+.reg small{display:block;margin-bottom:2px;font-size:13px;font-weight:600;letter-spacing:0;color:var(--gi)}
+.hotel{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;min-height:52px;padding:10px 14px;text-align:left;background:var(--soft);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:12px;font-size:15px}
+.hotel span{font-weight:700}.hotel b{font-size:13px;color:var(--gi);white-space:nowrap}
+.tl{position:relative;margin:14px 0 0;padding:0;list-style:none}
+.tl::before{content:"";position:absolute;left:61px;top:12px;bottom:12px;width:2px;background:var(--line)}
+.it{display:flex;align-items:flex-start;width:100%;min-height:48px;padding:9px 0;text-align:left;background:none;border:0;font-size:15px}
+.it time{flex:none;width:56px;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.it time small{display:block;font-size:11px;font-weight:500;color:var(--mut)}
+.nm{position:relative;flex:1;min-width:0;padding-left:22px}
+.nm::before{content:"";position:absolute;left:0;top:4px;width:12px;height:12px;border-radius:50%;background:var(--card);border:2px solid var(--line)}
+.ok .nm::before{background:var(--ok);border-color:var(--ok)}
+.tbd .nm::before{background:var(--soft);border-color:var(--gold)}
+.t{font-weight:600}
+.en{display:flex;justify-content:space-between;gap:10px;margin-top:2px;font-size:12.5px;color:var(--mut)}
+.en span{flex:1;min-width:0}.en b{color:var(--ink);font-weight:600;text-align:right}.en b.u{color:var(--gi)}.en i{font-style:normal;font-weight:400;color:var(--mut)}
+.add{width:100%;min-height:48px;margin-top:8px;background:none;border:1.5px dashed var(--line);border-radius:12px;color:var(--gi);font-size:15px;font-weight:600}
+.dtot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:14px 16px;background:var(--navy);color:#fff;border-radius:14px;font-size:14px}
+.dtot b{font-size:18px;color:#f3cf8b}
+.note{margin:0 2px 12px;font-size:13px;color:var(--mut)}
+.sum{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.sum button{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:10px 14px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.sum .d{flex:none;width:34px;font-weight:800;color:var(--gi)}
+.sum .m{flex:1;min-width:0}.sum .m span{display:block;font-weight:600}
+.sum .m small{display:block;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sum .a{font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.card{padding:6px 14px;background:var(--card);border:1px solid var(--line);border-radius:14px}
+.card label{display:flex;align-items:center;gap:10px;padding:8px 0;font-weight:600}
+.card input{flex:1;margin:0;text-align:right}
+.btn{display:block;width:100%;min-height:48px;margin-top:10px;padding:0 16px;background:var(--card);border:1px solid var(--line);border-radius:12px;font-size:16px;font-weight:600}
+.warn{color:var(--rose)}
+.pri{background:var(--gold);border-color:var(--gold);color:#14233a;flex:1;margin:0}
+input,select{width:100%;height:44px;padding:0 12px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;font:inherit;font-size:16px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tab{flex:1;min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:0;font-size:11px;color:var(--mut)}
+.tab i{font-style:normal;font-size:20px;line-height:1}
+.tab.on{color:var(--gi);font-weight:700}
+#scrim{position:fixed;inset:0;z-index:40;background:rgba(5,10,20,.55);opacity:0;visibility:hidden;transition:opacity .2s}
+#sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;display:flex;flex-direction:column;max-width:640px;max-height:92%;margin:0 auto;background:var(--card);border-radius:20px 20px 0 0;transform:translateY(100%);visibility:hidden;transition:transform .25s ease,visibility .25s}
+.shown #scrim{opacity:1;visibility:visible}
+.shown #sheet{transform:none;visibility:visible}
+.sh1{display:flex;justify-content:space-between;align-items:center;padding:10px 8px 8px 16px;border-bottom:1px solid var(--line)}
+.sh1 small{font-size:12px;font-weight:600;color:var(--gi)}.sh1 h3{margin:0;font-size:17px}
+.x{width:44px;height:44px;background:none;border:0;font-size:18px;color:var(--mut)}
+.bd{overflow-y:auto;overscroll-behavior:contain;padding:12px 16px}
+.f2{display:grid;grid-template-columns:112px 1fr;gap:10px}
+.bd label{display:block;font-size:12px;font-weight:600;color:var(--mut)}.bd label input{margin-top:4px}
+.er{margin-top:8px;padding:10px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.r1,.r2{display:flex;gap:8px;align-items:center}.r2{margin-top:8px}
+.r2 .ea{flex:1;min-width:0;text-align:right}.ec{flex:none;width:88px}
+.ep{flex:none;width:84px;text-align:right;font-size:12px;font-weight:700;color:var(--gi)}
+.rm{flex:none;width:44px;height:44px;background:none;border:0;color:var(--mut);font-size:16px}
+.ghost{color:var(--gi);border-style:dashed}
+.sr{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:12px;font-weight:600}
+.sr b{font-size:17px}
+.ft{display:flex;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.ft .btn{margin:0;width:auto}
+#toast{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:50;max-width:90%;padding:10px 16px;transform:translateX(-50%);background:var(--navy);color:#fff;border:1px solid var(--gold);border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="fr"></div>
+  <div class="hd">
+    <div><h1>이집트 10박 11일</h1><div class="sub">2026.11.27(금) – 12.07(월) · <span id="st">연결 중…</span></div></div>
+    <div class="tt"><small>총 예상 비용</small><b id="total">0원</b></div>
+  </div>
+  <div id="chips"></div>
+</header>
+<main id="main"></main>
+<nav>
+  <button class="tab" data-v="day"><i>📅</i>일정</button>
+  <button class="tab" data-v="cost"><i>💰</i>비용</button>
+  <button class="tab" data-v="set"><i>⚙️</i>설정</button>
+</nav>
+<div id="scrim"></div>
+<section id="sheet" role="dialog" aria-modal="true" aria-labelledby="sh">
+  <div class="sh1"><div><small id="sb"></small><h3 id="sh"></h3></div><button class="x" id="x" aria-label="닫기">✕</button></div>
+  <div class="bd">
+    <div class="f2">
+      <label>시간<input id="et" autocomplete="off"></label>
+      <label id="nl"><span>일정명</span><input id="en" autocomplete="off"></label>
+    </div>
+    <div id="ents"></div>
+    <button class="btn ghost" id="addE">+ 비용·메모 항목 추가</button>
+    <div class="sr"><span>이 항목 원화 합계</span><b id="msum">0원</b></div>
+  </div>
+  <div class="ft"><button class="btn warn" id="del">삭제</button><button class="btn pri" id="save">저장</button></div>
+</section>
+<div id="toast"></div>
+
+<script>
+const KEY="egypt_trip_m_v1",E=(d,a,c)=>({detail:d,amount:a,currency:c}),F=()=>E("식비",null,"EGP"),TX=()=>E("택시비",null,"EGP");
+const D=(day,date,region,hotel,amt,hd,items)=>({day,date,region,hotel,hotelEntries:[E(hd,amt,"KRW")],items:items.map(([time,schedule,...entries])=>({time,schedule,entries}))});
+const DEF={rates:{USD:1327.8,EGP:24.68},days:[
+D(1,"11/27 (금)","카이로","Nazlet El-Semman의 방",198517,"카이로 숙박비 (Nazlet El-Semman의 방)",[["10:00~11:00","카이로 도착"],["11:00~12:00","입국"],["12:00~13:00","공항→호텔",TX()],["13:00~14:00","호텔 이동"],["14:00~15:00","Check-in"],["15:00~16:00","휴식"],["16:00~18:00","카이로 시내"],["18:00~19:00","호텔 이동"],["19:00~20:00","저녁",F()],["20:00~21:00","휴식"],["21:00~23:00","호텔"]]),
+D(2,"11/28 (토)","카이로","Nazlet El-Semman의 방",0,"카이로 연박 결제 포함 (0원)",[["09:00~10:00","조식",F()],["10:00~11:00","이샤 파흐미 궁전"],["11:00~13:00","자말렉 가로수길 & 갤러리 거리 산책"],["13:00~14:00","점심(아부타릭코샤리)",F()],["14:00~15:00","카페",F()],["17:00~18:00","칼앤칼릴리"],["18:00~20:00","저녁 시타델 뷰 레스토랑",F()],["20:00~21:00","카이로 야경"],["21:00~23:00","호텔"]]),
+D(3,"11/29 (일)","카이로","야간 이동 (카이로 → 시와)",0,"차량 이동 숙박 (별도 호텔 없음)",[["07:00~16:00","무휘 투어 (기자, 스핑크스, GEM)",E("07:35 픽업 ~ 15:00",null,"USD")],["18:00~19:00","저녁"],["19:00~24:00","카이로→시와",E("택시비",320,"USD")]]),
+D(4,"11/30 (월)","시와","Qasr El Salam",76969,"시와 숙박비 (Qasr El Salam)",[["07:00~08:00","조식"],["08:00~09:00","시와 올드타운"],["09:00~10:00","소금호수"],["10:00~11:00","클레오파트라"],["11:00~12:00","시와 오아시스"],["12:00~13:00","점심"],["13:00~15:00","샬리 요새"],["18:00~19:00","저녁"],["19:00~20:00","시와 저녁"],["20:00~21:00","시와 야경"],["21:00~23:00","호텔"]]),
+D(5,"12/1 (화)","시와→카이로","Ocean Blue Studios",66619,"카이로 숙박비 (Ocean Blue Studios)",[["07:00~08:00","조식",E("호텔",0,"KRW")],["08:00~10:00","시와 관광"],["10:00~11:00","구시가지"],["11:00~12:00","이동 준비"],["12:00~13:00","점심",F()],["13:00~23:00","시와→카이로",E("택시비",0,"KRW")]]),
+D(6,"12/2 (수)","아스완","Obelisk Nile",324880,"아스완 숙박비 (Obelisk Nile)",[["09:00~10:00","조식",F()],["14:00~15:00","공항 이동"],["15:00~17:00","카이로→아스완 (15:20~16:40)",E("항공료",193000,"KRW")],["18:00~19:00","저녁"],["19:00~20:00","아스완 저녁"],["20:00~21:00","휴식"],["21:00~23:00","호텔"]]),
+D(7,"12/3 (목)","아부심벨","Obelisk Nile",0,"아스완 연박 결제 포함 (0원)",[["07:00~18:00","모마투어 (아스완, 아부심벨) 05:00~18:30",E("투어비",160,"USD"),E("입장료",14000,"EGP")],["18:00~19:00","호텔"],["19:00~21:00","휴식"],["21:00~23:00","호텔"]]),
+D(8,"12/4 (금)","아스완→룩소르","Al Moudira Hotel",578580,"룩소르 숙박비 (Al Moudira Hotel)",[["07:00~08:00","조식",F()],["16:00~19:00","아스완→룩소르 (16:50~18:00)",E("항공료",450624,"KRW")],["19:00~20:00","룩소르 저녁"],["20:00~21:00","휴식"],["21:00~23:00","호텔"]]),
+D(9,"12/5 (토)","룩소르","Iberotel Luxor",147433,"룩소르 숙박비 (Iberotel Luxor)",[["09:00~10:00","조식",F()],["11:00~12:00","서안→동안 (Check in)",TX()],["13:00~14:00","점심",F()],["18:00~19:00","저녁",F()],["19:00~20:00","룩소르 저녁"],["20:00~21:00","휴식"],["21:00~23:00","호텔"]]),
+D(10,"12/6 (일)","룩소르→카이로","Ramses Hilton",263439,"카이로 숙박비 (Ramses Hilton)",[["07:00~14:00","지성투어 (05:30~14:00)",E("잔금80$(2인) / 유적:2510 / 카트:50 / 식비 400(인당, EGP)",450503,"KRW")],["16:00~19:00","룩소르→카이로 (비행기)"],["19:00~20:00","호텔"],["20:00~21:00","휴식"],["21:00~23:00","호텔"]]),
+D(11,"12/7 (월)","카이로","출국일 (숙박 없음)",0,"출국일 (숙박 없음)",[["07:00~09:00","스냅 촬영",E("촬영료",null,"USD")],["09:00~10:00","조식",F()],["13:00~14:00","점심",F()],["14:00~15:00","카페/휴식",F()],["15:00~16:00","카이로 시내"],["16:00~17:00","자유시간"],["17:00~18:00","저녁",F()],["18:00~19:00","공항 이동"],["19:00~20:00","공항"],["20:00~21:00","출국"]])
+]};
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const has=a=>a!==null&&a!==undefined&&a!==""&&!isNaN(a);
+const clone=o=>JSON.parse(JSON.stringify(o));
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&Array.isArray(s.days)&&s.rates)return s}catch(e){}return clone(DEF)}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let S=load(),view="day",cur=0,edit=null,draft=[],DB=null,rtm;
+const dayId=d=>"d"+String(d.day).padStart(2,"0");
+const setSt=t=>{$("st").textContent=t};
+async function commitDay(i,day){
+  if(DB){
+    try{await DB.doc("days/"+dayId(day)).set(day)}
+    catch(e){toast(e&&e.code==="invalid_argument"?"수정 권한이 없어요. 보기 전용으로 공유된 것 같아요":"저장하지 못했어요. 잠시 후 다시 시도해 주세요");return false}
+  }
+  S.days[i]=day;save();return true;
+}
+(function(){const t=new Date();if(t.getFullYear()===2026){const k=(t.getMonth()+1)+"/"+t.getDate()+" ";const i=S.days.findIndex(d=>d.date.startsWith(k));if(i>=0)cur=i}})();
+
+const krw=(a,c)=>!has(a)?0:Number(a)*(c==="USD"?S.rates.USD:c==="EGP"?S.rates.EGP:1);
+const won=v=>Math.round(v).toLocaleString("ko-KR")+"원";
+const orig=(a,c)=>c==="USD"?"$"+Number(a).toLocaleString("en-US"):c==="EGP"?Number(a).toLocaleString("en-US")+" EGP":won(a);
+const sum=es=>(es||[]).reduce((t,e)=>t+krw(e.amount,e.currency),0);
+const dayTotal=d=>sum(d.hotelEntries)+d.items.reduce((t,i)=>t+sum(i.entries),0);
+const grand=()=>S.days.reduce((t,d)=>t+dayTotal(d),0);
+const updTotal=()=>{$("total").textContent=won(grand())};
+
+function entryLine(e){
+  const v=has(e.amount);
+  const val=!v?"미정":e.currency==="KRW"?won(e.amount):won(krw(e.amount,e.currency))+" <i>("+orig(e.amount,e.currency)+")</i>";
+  return `<div class="en"><span>${esc(e.detail||"세부 내역")}</span><b class="${v?"":"u"}">${val}</b></div>`;
+}
+function row(it,k){
+  const es=it.entries||[];
+  const paid=es.some(e=>has(e.amount)&&Number(e.amount)>0),tbd=es.some(e=>!has(e.amount));
+  const p=(it.time||"").split("~");
+  return `<li class="${paid?"ok":tbd?"tbd":""}"><button class="it" data-k="${k}"><time>${esc(p[0])}<small>${p[1]?"~"+esc(p[1]):""}</small></time><span class="nm"><span class="t">${esc(it.schedule)}</span>${es.map(entryLine).join("")}</span></button></li>`;
+}
+function dayHTML(){
+  const d=S.days[cur],hs=sum(d.hotelEntries);
+  return `<h2 class="reg"><small>DAY ${d.day} · ${esc(d.date)}</small>${esc(d.region)}</h2>
+  <button class="hotel" data-h="1"><span>🏨 ${esc(d.hotel||"숙소 미지정")}</span><b>${hs>0?won(hs):"숙박 0원"}</b></button>
+  <ol class="tl">${d.items.map(row).join("")}</ol>
+  <button class="add" data-add="1">+ 일정 추가</button>
+  <div class="dtot"><span>일별 합계 (숙소 포함)</span><b>${won(dayTotal(d))}</b></div>`;
+}
+function costHTML(){
+  let n=0;S.days.forEach(d=>d.items.forEach(i=>(i.entries||[]).forEach(e=>{if(!has(e.amount))n++})));
+  return `<h2 class="reg">일자별 비용</h2><p class="note">금액 미정 ${n}건은 합계에 아직 반영되지 않았어요. 일자를 누르면 일정으로 이동해요.</p>
+  <ul class="sum">${S.days.map((d,i)=>`<li><button data-go="${i}"><span class="d">D${d.day}</span><span class="m"><span>${esc(d.date.split(" ")[0])} ${esc(d.region)}</span><small>${esc(d.hotel)}</small></span><span class="a">${won(dayTotal(d))}</span></button></li>`).join("")}</ul>`;
+}
+function setHTML(){
+  return `<h2 class="reg">설정</h2>
+  <div class="card"><label>1 USD<input id="usd" inputmode="decimal" value="${S.rates.USD}"><span>원</span></label><label>1 EGP<input id="egp" inputmode="decimal" value="${S.rates.EGP}"><span>원</span></label></div>
+  <button class="btn" id="csv">비용표 복사 (엑셀·Numbers용)</button>
+  <button class="btn warn" id="reset">원본 일정으로 초기화</button>`;
+}
+function render(){
+  updTotal();
+  $("chips").hidden=view!=="day";
+  $("chips").innerHTML=S.days.map((d,i)=>`<button class="chip${i===cur?" on":""}" data-i="${i}"><b>D${d.day}</b>${esc(d.date.replace(" ",""))}</button>`).join("");
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("on",b.dataset.v===view));
+  $("main").innerHTML=view==="day"?dayHTML():view==="cost"?costHTML():setHTML();
+  const c=$("chips"),el=c.querySelector(".on");
+  if(el)c.scrollLeft=el.offsetLeft-(c.clientWidth-el.offsetWidth)/2;
+}
+function go(i){cur=i;view="day";render();scrollTo(0,0)}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(window.__t);window.__t=setTimeout(()=>t.classList.remove("on"),2200)}
+
+/* 시트(편집) */
+function openEdit(t){
+  edit=t;const d=S.days[t.i];let time,name,es;
+  if(t.t==="hotel"){time="숙박";name=d.hotel||"";es=d.hotelEntries||[]}
+  else if(t.t==="new"){time="21:00~22:00";name="";es=[]}
+  else{const it=d.items[t.k];time=it.time;name=it.schedule;es=it.entries||[]}
+  $("sb").textContent=`DAY ${d.day} · ${d.date} · ${d.region}`;
+  $("sh").textContent=t.t==="hotel"?"숙소와 숙박비":t.t==="new"?"일정 추가":"일정과 비용";
+  $("et").value=time;$("et").disabled=t.t==="hotel";
+  $("nl").firstElementChild.textContent=t.t==="hotel"?"숙소명":"일정명";
+  $("en").value=name;$("del").hidden=t.t!=="item";
+  draft=clone(es);if(!draft.length)draft=[{detail:"",amount:null,currency:t.t==="hotel"?"KRW":"EGP"}];
+  drawE();document.body.classList.add("shown");document.querySelector(".bd").scrollTop=0;
+}
+function closeSheet(){document.body.classList.remove("shown");edit=null}
+function drawE(){
+  $("ents").innerHTML=draft.map((e,i)=>`<div class="er" data-i="${i}"><div class="r1"><input class="ed" placeholder="내용 (예: 식비, 택시비, 입장료)" value="${esc(e.detail)}"><button class="rm" aria-label="항목 삭제">✕</button></div><div class="r2"><input class="ea" inputmode="decimal" placeholder="금액 (비우면 미정)" value="${has(e.amount)?e.amount:""}"><select class="ec">${["KRW","USD","EGP"].map(c=>`<option value="${c}"${c===e.currency?" selected":""}>${c}</option>`).join("")}</select><span class="ep">${has(e.amount)?won(krw(e.amount,e.currency)):"미정"}</span></div></div>`).join("");
+  $("msum").textContent=won(sum(draft));
+}
+function onEnt(e){
+  const r=e.target.closest(".er");if(!r)return;
+  const d=draft[+r.dataset.i],v=r.querySelector(".ea").value.replace(/,/g,"").trim(),n=parseFloat(v);
+  d.detail=r.querySelector(".ed").value;d.amount=v===""||isNaN(n)?null:n;d.currency=r.querySelector(".ec").value;
+  r.querySelector(".ep").textContent=has(d.amount)?won(krw(d.amount,d.currency)):"미정";
+  $("msum").textContent=won(sum(draft));
+}
+$("ents").addEventListener("input",onEnt);$("ents").addEventListener("change",onEnt);
+$("ents").addEventListener("click",e=>{const b=e.target.closest(".rm");if(b){draft.splice(+b.closest(".er").dataset.i,1);drawE()}});
+$("addE").onclick=()=>{draft.push({detail:"",amount:null,currency:edit&&edit.t==="hotel"?"KRW":"EGP"});drawE()};
+$("x").onclick=closeSheet;$("scrim").onclick=closeSheet;
+$("save").onclick=async()=>{
+  if(!edit)return;const i=edit.i,d=clone(S.days[i]);
+  const clean=draft.filter(e=>(e.detail&&e.detail.trim())||has(e.amount));
+  const time=$("et").value.trim(),name=$("en").value.trim();
+  if(edit.t==="hotel"){d.hotel=name||"숙소 미지정";d.hotelEntries=clean}
+  else if(edit.t==="new"){d.items.push({time:time||"21:00~22:00",schedule:name||"새 일정",entries:clean})}
+  else{const it=d.items[edit.k];it.time=time||it.time;it.schedule=name||it.schedule;it.entries=clean}
+  const b=$("save");b.disabled=true;
+  const ok=await commitDay(i,d);b.disabled=false;
+  if(ok){closeSheet();render();toast("저장했어요")}
+};
+$("del").onclick=async()=>{if(!edit||edit.t!=="item")return;const i=edit.i,d=clone(S.days[i]);d.items.splice(edit.k,1);if(await commitDay(i,d)){closeSheet();render();toast("일정을 삭제했어요")}};
+
+/* 메인 영역 */
+function tsv(){
+  const r=[["Day","날짜","지역","구분","시간","일정/숙소","세부내용","금액","통화","원화환산"]];
+  S.days.forEach(d=>{
+    const add=(k,t,n,es)=>(es.length?es:[{}]).forEach(e=>r.push(["DAY "+d.day,d.date,d.region,k,t,n,e.detail||"",has(e.amount)?e.amount:"",e.currency||"",has(e.amount)?Math.round(krw(e.amount,e.currency)):""]));
+    add("숙소","숙박",d.hotel||"",d.hotelEntries||[]);
+    d.items.forEach(i=>add("일정",i.time,i.schedule,i.entries||[]));
+  });
+  return r.map(x=>x.join("\t")).join("\n");
+}
+async function copy(t){
+  try{await navigator.clipboard.writeText(t);return true}catch(e){
+    try{const a=document.createElement("textarea");a.value=t;a.style.cssText="position:fixed;opacity:0";document.body.appendChild(a);a.select();const ok=document.execCommand("copy");a.remove();return ok}catch(e2){return false}
+  }
+}
+let rt;
+$("main").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.k!==undefined)openEdit({t:"item",i:cur,k:+b.dataset.k});
+  else if(b.dataset.h)openEdit({t:"hotel",i:cur});
+  else if(b.dataset.add)openEdit({t:"new",i:cur});
+  else if(b.dataset.go!==undefined)go(+b.dataset.go);
+  else if(b.id==="csv")copy(tsv()).then(ok=>toast(ok?"복사했어요. 엑셀이나 Numbers에 붙여넣으세요":"복사하지 못했어요"));
+  else if(b.id==="reset"){
+    if(!b.dataset.arm){b.dataset.arm="1";b.textContent="정말 초기화할까요? 같이 보는 사람 화면도 바뀌어요";rt=setTimeout(()=>{b.dataset.arm="";b.textContent="원본 일정으로 초기화"},3500)}
+    else{clearTimeout(rt);const n=clone(DEF);b.disabled=true;
+      (async()=>{
+        if(DB){try{for(const d of n.days)await DB.doc("days/"+dayId(d)).set(d);await DB.doc("meta/rates").set(n.rates)}catch(x){toast("초기화하지 못했어요");b.disabled=false;return}}
+        S=n;save();render();toast("원본 일정으로 되돌렸어요");
+      })();
+    }
+  }
+});
+$("main").addEventListener("input",e=>{
+  const k=e.target.id==="usd"?"USD":e.target.id==="egp"?"EGP":null;if(!k)return;
+  S.rates[k]=parseFloat(e.target.value)||DEF.rates[k];save();updTotal();
+  clearTimeout(rtm);rtm=setTimeout(async()=>{if(DB){try{await DB.doc("meta/rates").set({USD:S.rates.USD,EGP:S.rates.EGP})}catch(x){toast("환율을 공유하지 못했어요")}}},700);
+});
+$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(b)go(+b.dataset.i)});
+document.querySelector("nav").addEventListener("click",e=>{const b=e.target.closest(".tab");if(!b)return;view=b.dataset.v;render();scrollTo(0,0)});
+
+/* 좌우 스와이프로 일차 이동 */
+let sx=0,sy=0;const mn=$("main");
+mn.addEventListener("touchstart",e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});
+mn.addEventListener("touchend",e=>{
+  if(view!=="day")return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+  if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6){const n=cur+(dx<0?1:-1);if(n>=0&&n<S.days.length)go(n)}
+},{passive:true});
+
+render();
+(async()=>{
+  const timer=setTimeout(()=>setSt("이 기기에만 저장 중"),10000);
+  try{DB=window.claude?await claude.use("db"):null}catch(e){DB=null}
+  if(!DB){clearTimeout(timer);setSt("이 기기에만 저장 중");return}
+  const live=snap=>{if(!snap.metadata.fromCache){clearTimeout(timer);setSt("실시간 공유 중")}};
+  const busy=()=>{const a=document.activeElement;return !!a&&a.tagName==="INPUT"&&$("main").contains(a)};
+  DB.collection("days").onSnapshot(snap=>{
+    live(snap);
+    if(snap.empty)return;
+    S.days=snap.docs.map(d=>clone(d.data()));save();
+    if(cur>=S.days.length)cur=0;
+    if(!busy())render();
+  },()=>{clearTimeout(timer);setSt("이 기기에만 저장 중")});
+  DB.doc("meta/rates").onSnapshot(snap=>{
+    live(snap);
+    if(!snap.exists||busy())return;
+    const r=snap.data();S.rates={USD:r.USD,EGP:r.EGP};save();render();
+  },()=>{});
+})();
+</script>
+</body>
+</html>
